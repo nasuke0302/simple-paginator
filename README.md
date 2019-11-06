@@ -14,7 +14,7 @@ In some client code:
 ```
 import { paginator } from 'meteor/nasuke:simple-paginator'
 
-const array = [{ a: 1 }, { b: 2 }];
+const array = [{ a: 1 }, { a: 2 }, { a: 3 }];
 
 Template.MyTemplate.onCreated(function () {
     this.paginator = paginator.setArray(array);
@@ -24,7 +24,30 @@ Template.MyTemplate.onCreated(function () {
 The ```paginator``` object exported by this package has some methods:
 
 ## paginator.setArray
-  Sets the array to paginate. Must be the first method you call, probably inside your template's ```onCreated``` hook. Returns ```paginator```.
+Sets the array to paginate. Must be the first method you call, probably inside your template's ```onCreated``` hook. Returns ```paginator```.
+  
+## paginator.getPage
+Returns an ```array``` with the elements for the current page.
+
+In ```myTemplate.js```
+```javascript
+Template.myTemplate.helpers({
+    items() {
+        return paginator.getPage();
+    }
+});
+```
+
+In ```myTemplate.hmtl```
+```html
+<template name='MyTemplate'>
+  <div class='items-list'>
+    {{#each item in items}}
+      <div class='item'>{{ item.a }}</div>
+    {{/each}}
+  </div>
+<template>
+```
 
 ## paginator.getTotalPages
 Returns an ```array``` of numbers with the proper number of pages for your array (e.g. ```[1, 2, 3]```) suitable for use with an ```each``` in your html:
